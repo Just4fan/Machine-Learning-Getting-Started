@@ -69,10 +69,10 @@ class GMM(object):
 
     def score(self, test_x, test_y):
         size = len(test_x)
-        y_matrix = [self.gaussian_distribution(test_x, k) * self.weights[k]
+        y_matrix = [self.gaussian_distribution(test_x, k)
                     for k in range(self.n_components)]
-        for k in range(self.n_components):
-            print(y_matrix[k])
+        # for k in range(self.n_components):
+        #     print(y_matrix[k])
         py = []
 
         for i in range(size):
@@ -82,26 +82,26 @@ class GMM(object):
                 if y_matrix[k][i] > max:
                     max = y_matrix[k][i]
                     t = k
-                py.append(t)
+            py.append(t)
 
         err = 0
         for k in range(self.n_components):
-            index = []
-            index.append(
-                [y for y in range(len(test_y)) if int(test_y[y]) == k])
+            index = [y for y in range(len(test_y)) if int(test_y[y]) == k]
             # print(index)
-            tp = []
-            for i in index:
-                print(py[i])
+            tp = [py[i] for i in index]
             print(tp)
             max = -1
             c = Counter(np.array(tp))
+            print(c)
             for k in range(self.n_components):
-                if max < c[k*1.0]:
-                    max = c[k*1.0]
-                err += len(tp) - max
+                # print(c[k])
+                if max < c[k]:
+                    max = c[k]
+            err += len(tp) - max
+        print(test_y)
+        print(py)
 
-        return err
+        return err, py
 
     def likelihood(self, data):
         y_matrix = np.array([self.gaussian_distribution(data, k) * self.weights[k]
@@ -135,7 +135,7 @@ class GMM(object):
                     y_matrix[k] * e.transpose(), e) / np.sum(y_matrix[k])
             self.weights = np.sum(y_matrix, axis=1) / size
             ll_c = self.likelihood(data)
-            print(ll_c)
+            # print(ll_c)
             # print(self.mean)
             # print(self.conv)
             # print(self.weights)
@@ -157,12 +157,12 @@ if __name__ == "__main__":
     gmm = GMM(3)
     # gmm.initialize(X, 3)
     gmm.fit(X)
-    err = gmm.score(X, Y)
+    err, py = gmm.score(X, Y)
     print("ERR: {0} / {1}".format(err, len(X)))
     # print("Accuracy: {0} / {1}".format(result, size))
-    # print(gmm.mean)
-    # print(mean)
-    # print(gmm.conv)
-    # print(conv)
-    # print(gmm.weights)
-    # draw(X, py)
+    print(gmm.mean)
+    print(mean)
+    print(gmm.conv)
+    print(conv)
+    print(gmm.weights)
+    draw(X, py)
