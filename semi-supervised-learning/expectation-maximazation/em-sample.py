@@ -35,10 +35,10 @@ def EM(w, data):
 
 
 if __name__ == "__main__":
-    data = generate_data(0.7, 0.4, 0.6, 10)
+    data = generate_data(0.5, 0.4, 0.6, 10000)
     # data = [1, 1, 0, 1, 0, 0, 1, 0, 1, 1]
     # data = [1, 1, 0, 1, 0, 0, 1, 0, 1, 1]
     # print(data)
-    w = np.array([0.4, 0.6, 0.7])
+    w = np.array([0.5, 0.5, 0.4])
     w = EM(w, data)
     print(w)
