@@ -1,5 +1,4 @@
 """
-test.py
 """
 import mnist_loader
 import network

@@ -28,7 +28,7 @@ class GMM(object):
     def gaussian_distribution(self, X, k):
         conv_det = np.linalg.det(self.conv[k] + np.eye(self.dimension) * 1e-5)
         conv_inv = np.linalg.inv(self.conv[k] + np.eye(self.dimension) * 1e-5)
-        print(conv_det)
+        # print(conv_det)
         # print(np.power(np.power(2 * np.math.pi, self.dimension) * conv_det, 0.5))
 
         return (1.0 / np.power(np.power(2 * np.math.pi, self.dimension) * np.fabs(conv_det), 0.5)) \
@@ -66,6 +66,15 @@ class GMM(object):
         # print(self.weights)
         # print(self.mean)
         # print(self.conv)
+
+    def confusion_matrix(self, predict, label):
+        pass
+
+    def evaluate(self, test_x, test_y):
+        size = len(test_x)
+        y_matrix = [self.gaussian_distribution(test_x, k)
+                    for k in range(self.n_components)]
+        predict_y = np.argmax(y_matrix, axis=0)
 
     def score(self, test_x, test_y):
         size = len(test_x)
@@ -108,7 +117,7 @@ class GMM(object):
                              for k in range(self.n_components)])
         log_y = -np.log(np.sum(y_matrix, axis=0))
         # print(log_y.shape)
-
+        print(np.sum(log_y))
         return np.sum(log_y)
 
     def fit(self, data):
@@ -143,7 +152,7 @@ class GMM(object):
 
 if __name__ == "__main__":
     size = 300
-    mean = [[13.2, 10.1], [0.2, 0.8], [5.2, 6.8]]
+    mean = [[13.2, 5.1], [0.2, 0.8], [5.2, 6.8]]
     conv = [[[1, 0], [0, 1]], [[2.1, 0], [0, 2.1]], [[0.6, 0], [0, 0.6]]]
     data = np.random.choice([0, 1, 2], size=size,
                             replace=True, p=[0.5, 0.2, 0.3])

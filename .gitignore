@@ -1,2 +1,5 @@
 .vscode
 *CodeRunnerFile*
+ckpt
+datasets/*
+semi-supervised-learning/unsupervised-data-augmentation/image/datasets/*
